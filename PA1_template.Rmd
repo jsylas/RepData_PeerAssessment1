@@ -4,22 +4,60 @@ output:
   html_document:
     keep_md: true
 ---
-
-
 ## Loading and preprocessing the data
 
+```{r setup, include=TRUE}
+library(dplyr)
+setwd("C:/Users/J Sylus")
+data <- read.csv(unz("repdata-2Fdata-2Factivity.zip", "activity.csv"),header=T,stringsAsFactors=T, sep=",")
+data$date <- as.Date(data[,2],format="%Y-%m-%d")
+attach(data)
 
+```
 
 ## What is mean total number of steps taken per day?
 
-
+```{r mean}
+data_nona <- data[complete.cases(data),]
+day_sum <-summarise(group_by(data_nona,date),steps=sum(steps))
+interval_sum <- summarise(group_by(data_nona,interval),steps=mean(steps))
+mean(day_sum$steps)
+median(day_sum$steps)
+```
 
 ## What is the average daily activity pattern?
 
-
+```{r}
+hist(day_sum$steps,main="Steps Taken Each Day",col="blue",xlab="Steps")
+```
 
 ## Imputing missing values
 
+```{r impute, echo=TRUE}
+table(is.na(data[]))
+str(data)
+data_impute <- data
+day_means <-summarise(group_by(data_nona,date),steps=mean(steps))
+data_impute$steps[is.na(data_impute$steps)] <- mean(data_nona$steps)
+data_impute_sum <-summarise(group_by(data_impute,date),steps=sum(steps))
 
+mean(data_impute_sum$steps)
+median(data_impute_sum$steps)
+hist(data_impute_sum$steps,main="Steps Taken Each Day",col="blue",xlab="Steps")
+
+
+
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r graph, echo=TRUE}
+data_nona$weekday <- weekdays(data_nona$date)
+data_nona$weekdayfact[data_nona$weekday %in% c("Monday","Tuesday","Wednesday","Thursday","Friday")] <-1
+data_nona$weekdayfact[data_nona$weekday %in% c("Saturday","Sunday")] <-0
+weekdayfact_means <-summarise(group_by(data_nona,interval,weekdayfact),steps=mean(steps))
+weekdayplot_means <- subset(weekdayfact_means, weekdayfact_means$weekdayfact==0)
+weekendplot_means <- subset(weekdayfact_means, weekdayfact_means$weekdayfact==1)
+with(weekdayplot_means,plot(interval,steps,type="l",ylab="Steps)",xlab="Interval",main="Weekday"))
+with(weekendplot_means,plot(interval,steps,type="l",ylab="Steps)",xlab="Interval",main="Weekend"))
+```
+

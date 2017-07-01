@@ -88,14 +88,14 @@ str(data)
 ```r
 data_impute <- data
 day_means <-summarise(group_by(data_nona,date),steps=mean(steps))
-data_impute$steps[is.na(data_impute$steps)] <- mean(day_sum$steps)/sd(day_sum$steps)
+data_impute$steps[is.na(data_impute$steps)] <- mean(data_nona$steps)
 data_impute_sum <-summarise(group_by(data_impute,date),steps=sum(steps))
 
 mean(data_impute_sum$steps)
 ```
 
 ```
-## [1] 9449.481
+## [1] 10766.19
 ```
 
 ```r
@@ -103,7 +103,7 @@ median(data_impute_sum$steps)
 ```
 
 ```
-## [1] 10395
+## [1] 10766.19
 ```
 
 ```r
@@ -121,13 +121,13 @@ data_nona$weekdayfact[data_nona$weekday %in% c("Saturday","Sunday")] <-0
 weekdayfact_means <-summarise(group_by(data_nona,interval,weekdayfact),steps=mean(steps))
 weekdayplot_means <- subset(weekdayfact_means, weekdayfact_means$weekdayfact==0)
 weekendplot_means <- subset(weekdayfact_means, weekdayfact_means$weekdayfact==1)
-with(weekdayplot_means,plot(interval,steps,type="l",ylab="Steps)",xlab="Interval"))
+with(weekdayplot_means,plot(interval,steps,type="l",ylab="Steps)",xlab="Interval",main="Weekday"))
 ```
 
 ![](PA1_template_files/figure-html/graph-1.png)<!-- -->
 
 ```r
-with(weekendplot_means,plot(interval,steps,type="l",ylab="Steps)",xlab="Interval"))
+with(weekendplot_means,plot(interval,steps,type="l",ylab="Steps)",xlab="Interval",main="Weekend"))
 ```
 
 ![](PA1_template_files/figure-html/graph-2.png)<!-- -->
