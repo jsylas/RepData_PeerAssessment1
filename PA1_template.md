@@ -65,27 +65,6 @@ hist(day_sum$steps,main="Steps Taken Each Day",col="blue",xlab="Steps")
 
 
 ```r
-table(is.na(data[]))
-```
-
-```
-## 
-## FALSE  TRUE 
-## 50400  2304
-```
-
-```r
-str(data)
-```
-
-```
-## 'data.frame':	17568 obs. of  3 variables:
-##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
-##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
-```
-
-```r
 data_impute <- data
 day_means <-summarise(group_by(data_nona,date),steps=mean(steps))
 data_impute$steps[is.na(data_impute$steps)] <- mean(data_nona$steps)

@@ -153,15 +153,6 @@ mean(day_sum$steps)</code></pre>
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
-<pre class="r"><code>table(is.na(data[]))</code></pre>
-<pre><code>## 
-## FALSE  TRUE 
-## 50400  2304</code></pre>
-<pre class="r"><code>str(data)</code></pre>
-<pre><code>## 'data.frame':    17568 obs. of  3 variables:
-##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ date    : Date, format: &quot;2012-10-01&quot; &quot;2012-10-01&quot; ...
-##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...</code></pre>
 <pre class="r"><code>data_impute &lt;- data
 day_means &lt;-summarise(group_by(data_nona,date),steps=mean(steps))
 data_impute$steps[is.na(data_impute$steps)] &lt;- mean(data_nona$steps)

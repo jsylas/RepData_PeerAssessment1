@@ -34,8 +34,6 @@ hist(day_sum$steps,main="Steps Taken Each Day",col="blue",xlab="Steps")
 ## Imputing missing values
 
 ```{r impute, echo=TRUE}
-table(is.na(data[]))
-str(data)
 data_impute <- data
 day_means <-summarise(group_by(data_nona,date),steps=mean(steps))
 data_impute$steps[is.na(data_impute$steps)] <- mean(data_nona$steps)
