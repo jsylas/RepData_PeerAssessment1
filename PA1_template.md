@@ -37,6 +37,12 @@ attach(data)
 data_nona <- data[complete.cases(data),]
 day_sum <-summarise(group_by(data_nona,date),steps=sum(steps))
 interval_sum <- summarise(group_by(data_nona,interval),steps=mean(steps))
+hist(day_sum$steps,main="Steps Taken Each Day",col="blue",xlab="Steps")
+```
+
+![](PA1_template_files/figure-html/mean-1.png)<!-- -->
+
+```r
 mean(day_sum$steps)
 ```
 
@@ -56,10 +62,21 @@ median(day_sum$steps)
 
 
 ```r
-hist(day_sum$steps,main="Steps Taken Each Day",col="blue",xlab="Steps")
+with(interval_sum,plot(interval,steps,type="l",ylab="Steps)",xlab="Interval",main="Activity Pattern"))
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+
+```r
+interval_sum[interval_sum$steps==max(interval_sum$steps),]
+```
+
+```
+## # A tibble: 1 × 2
+##   interval    steps
+##      <int>    <dbl>
+## 1      835 206.1698
+```
 
 ## Imputing missing values
 
